@@ -16,7 +16,7 @@
   <property name="windowTitle">
    <string>Control Unit</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QGridLayout" name="main_verticalLayout">
    <item row="0" column="0">
     <widget class="QLabel" name="title_label">
      <property name="minimumSize">
