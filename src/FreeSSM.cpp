@@ -34,8 +34,10 @@ FreeSSM::FreeSSM(QApplication *app)
 	setupUi(this);
 	setWindowFlags( windowFlags() & ~Qt::WindowMaximizeButtonHint );	// only necessary for MS Windows
 	setupUiFonts();
+#ifndef SMALL_RESOLUTION
 	// LOAD BACKGROUND PICTURE:
 	background_label->setPixmap(appsPath + "/background.png");
+
 	// SHOW PROGRAM TITEL + VERSION:
 	QFont titlefont = this->font();
 	titlefont.setPixelSize(27); // 20pts
@@ -50,6 +52,9 @@ FreeSSM::FreeSSM(QApplication *app)
 	int x = (desktop.width() - size().width()) / 2;
 	int y = (desktop.height() - size().height()) / 2 - 50;
 	this->move ( x, y );
+#else
+    showFullScreen();
+#endif
 	// LOAD PREFERENCES FROM FILE:
 	QString savedinterfacefilename = "";
 	QString savedlanguage = "";
@@ -68,7 +73,7 @@ FreeSSM::FreeSSM(QApplication *app)
 		}
 		if (!prefsfile.atEnd())
 		{
-			// Load language settings:
+            // Load language settings:
 			line = prefsfile.readLine();
 			line.truncate(line.length()-1);
 			savedlanguage = static_cast<QString>(line);
@@ -657,6 +662,7 @@ void FreeSSM::closeEvent(QCloseEvent *event)
 
 void FreeSSM::setupUiFonts()
 {
+#ifndef SMALL_RESOLUTION
 	// SET FONT FAMILY AND FONT SIZE
 	// OVERWRITES SETTINGS OF ui_FreeSSM.h (made with QDesigner)
 	QFont appfont = QApplication::font();
@@ -696,6 +702,7 @@ void FreeSSM::setupUiFonts()
 	font.setFamily(appfont.family());
 	font.setPixelSize(16);	// 12pts
 	exit_pushButton->setFont(font);
+#endif
 }
 
 
