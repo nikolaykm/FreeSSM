@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>644</width>
-    <height>291</height>
+    <width>477</width>
+    <height>140</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -33,6 +33,9 @@
     <family>Liberation Sans</family>
    </font>
   </property>
+  <property name="toolButtonStyle">
+   <enum>Qt::ToolButtonIconOnly</enum>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -41,6 +44,18 @@
     </sizepolicy>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
+    <property name="leftMargin">
+     <number>6</number>
+    </property>
+    <property name="topMargin">
+     <number>6</number>
+    </property>
+    <property name="rightMargin">
+     <number>6</number>
+    </property>
+    <property name="bottomMargin">
+     <number>6</number>
+    </property>
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout">
       <property name="sizeConstraint">
@@ -60,12 +75,21 @@
         <property name="font">
          <font>
           <pointsize>12</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
         <property name="text">
-         <string>          E&amp;xit              </string>
+         <string>E&amp;xit</string>
         </property>
         <property name="icon">
          <iconset resource="../../resources/FreeSSM.qrc">
@@ -76,6 +100,15 @@
           <width>32</width>
           <height>32</height>
          </size>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -93,10 +126,15 @@
         <property name="font">
          <font>
           <pointsize>12</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="text">
-         <string>  Cruise Control </string>
+         <string>Cruise Control</string>
         </property>
         <property name="icon">
          <iconset resource="../../resources/FreeSSM.qrc">
@@ -121,10 +159,15 @@
         <property name="font">
          <font>
           <pointsize>12</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="text">
-         <string>    &amp;Preferences    </string>
+         <string>&amp;Preferences</string>
         </property>
         <property name="icon">
          <iconset resource="../../resources/FreeSSM.qrc">
@@ -149,10 +192,15 @@
         <property name="font">
          <font>
           <pointsize>12</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="text">
-         <string>         &amp;Help             </string>
+         <string>&amp;Help</string>
         </property>
         <property name="icon">
          <iconset resource="../../resources/FreeSSM.qrc">
@@ -177,10 +225,15 @@
         <property name="font">
          <font>
           <pointsize>12</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="text">
-         <string>      ABS/VDC       </string>
+         <string>ABS/VDC</string>
         </property>
         <property name="icon">
          <iconset resource="../../resources/FreeSSM.qrc">
@@ -205,10 +258,15 @@
         <property name="font">
          <font>
           <pointsize>12</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="text">
-         <string>   &amp;Transmission  </string>
+         <string>&amp;Transmission</string>
         </property>
         <property name="icon">
          <iconset resource="../../resources/FreeSSM.qrc">
@@ -233,7 +291,12 @@
         <property name="font">
          <font>
           <pointsize>12</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>Air Conditioning</string>
@@ -248,6 +311,9 @@
           <height>32</height>
          </size>
         </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item row="2" column="2">
@@ -261,10 +327,15 @@
         <property name="font">
          <font>
           <pointsize>12</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="text">
-         <string>         &amp;About           </string>
+         <string>&amp;About</string>
         </property>
         <property name="icon">
          <iconset resource="../../resources/FreeSSM.qrc">
@@ -289,10 +360,18 @@
         <property name="font">
          <font>
           <pointsize>12</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
         <property name="text">
-         <string>        &amp;Engine         </string>
+         <string>&amp;Engine</string>
         </property>
         <property name="icon">
          <iconset resource="../../resources/FreeSSM.qrc">
