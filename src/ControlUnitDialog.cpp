@@ -30,27 +30,34 @@ ControlUnitDialog::ControlUnitDialog(QString title, AbstractDiagInterface *diagI
 	_contentWidget = NULL;
 	// Setup GUI:
 	setupUi(this);
-	setupUiFonts();
-	// enable maximize and minimize buttons
-	//   GNOME 3 at least: this also enables fast window management e.g. "View split on left" (Super-Left), "... right" (Super-Right)
-	setWindowFlags( Qt::Window );
-	// Move window to desired coordinates:
-	move( 30, 30 );
-	// Set window and dialog titles:
-	setWindowTitle("FreeSSM " + QApplication::applicationVersion() + " - " + title);
+    setupUiFonts();
+
+    // enable maximize and minimize buttons
+    //   GNOME 3 at least: this also enables fast window management e.g. "View split on left" (Super-Left), "... right" (Super-Right)
+    setWindowFlags( Qt::Window );
+    // Set window and dialog titles:
+    setWindowTitle("FreeSSM " + QApplication::applicationVersion() + " - " + title);
 	title_label->setText(title);
-	// Apply quirk for GTK+-Layout:
-	if (QApplication::style()->objectName().toLower() == "gtk+")
-	{
-		int left = 0;
-		int top = 0;
-		int right = 0;
-		int bottom = 0;
-		selection_horizontalLayout->getContentsMargins(&left, &top, &right, &bottom);
-		selection_horizontalLayout->setContentsMargins(left, top+8, right, bottom);
-		content_gridLayout->getContentsMargins(&left, &top, &right, &bottom);
-		content_gridLayout->setContentsMargins(left, top+8, right, bottom);
-	}
+
+    #ifndef SMALL_RESOLUTION
+        // Move window to desired coordinates:
+        move( 30, 30 );
+        // Apply quirk for GTK+-Layout:
+        if (QApplication::style()->objectName().toLower() == "gtk+")
+        {
+            int left = 0;
+            int top = 0;
+            int right = 0;
+            int bottom = 0;
+            selection_horizontalLayout->getContentsMargins(&left, &top, &right, &bottom);
+            selection_horizontalLayout->setContentsMargins(left, top+8, right, bottom);
+            content_gridLayout->getContentsMargins(&left, &top, &right, &bottom);
+            content_gridLayout->setContentsMargins(left, top+8, right, bottom);
+        }
+    #else
+        showFullScreen();
+    #endif
+
 	// Add status bar for the diagnostic interface
 	main_verticalLayout->setContentsMargins(-1, -1, -1, 4);
 	_ifstatusbar = new DiagInterfaceStatusBar(this);
@@ -117,8 +124,14 @@ QPushButton * ControlUnitDialog::addFunction(QString title, QIcon icon, bool che
 {
 	QPushButton *button = new QPushButton(selection_groupBox);
 	selButtons_verticalLayout->insertWidget(_selButtons.size(), button);
-	button->setFixedWidth(160);
-	button->setFixedHeight(35);
+
+    #ifndef SMALL_RESOLUTION
+        button->setFixedWidth(160);
+        button->setFixedHeight(35);
+    #else
+        button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    #endif
+
 	button->setCheckable(checkable);
 	button->setAutoExclusive(checkable);
 	// Icon:
