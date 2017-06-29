@@ -33,19 +33,26 @@ Preferences::Preferences(QMainWindow *parent, AbstractDiagInterface::interface_t
 	// SET UP GUI:
 	setupUi(this);
 	setupUiFonts();
-	// PLACE WINDOW:
-	// get coordinates of FreeSSM_MainWindow
-	QRect FreeSSM_MW_geometry;
-	int FreeSSM_MW_Xpos, FreeSSM_MW_Ypos;
-	FreeSSM_MW_geometry = parent->geometry();
-	FreeSSM_MW_Xpos = FreeSSM_MW_geometry.x();
-	FreeSSM_MW_Ypos = FreeSSM_MW_geometry.y();
-	// calculate new window coordinates
-	int x, y;
-	x = (FreeSSM_MW_Xpos + 60);
-	y = (FreeSSM_MW_Ypos + 40);
-	// move window to desired coordinates
-	move(x, y);
+    #ifndef SMALL_RESOLUTION
+        // PLACE WINDOW:
+        // get coordinates of FreeSSM_MainWindow
+        QRect FreeSSM_MW_geometry;
+        int FreeSSM_MW_Xpos, FreeSSM_MW_Ypos;
+        FreeSSM_MW_geometry = parent->geometry();
+        FreeSSM_MW_Xpos = FreeSSM_MW_geometry.x();
+        FreeSSM_MW_Ypos = FreeSSM_MW_geometry.y();
+        // calculate new window coordinates
+        int x, y;
+        x = (FreeSSM_MW_Xpos + 60);
+        y = (FreeSSM_MW_Ypos + 40);
+        // move window to desired coordinates
+        move(x, y);
+        show();
+    #else
+        setWindowFlags(Qt::Window);
+        showFullScreen();
+    #endif
+
 	// OUTPUT LANGUAGES:
 	for (int k=0; k<__supportedLocales.size(); k++)
 	{
@@ -490,6 +497,7 @@ void Preferences::displayErrorMsg(QString errormsg)
 
 void Preferences::setupUiFonts()
 {
+#ifndef SMALL_RESOLUTION
 	// SET FONT FAMILY AND FONT SIZE
 	// OVERWRITES SETTINGS OF ui_Preferences.h (made with QDesigner)
 	QFont appfont = QApplication::font();
@@ -545,5 +553,6 @@ void Preferences::setupUiFonts()
 	font.setFamily(appfont.family());
 	font.setPixelSize(12);	// 9pts
 	interfaceName_comboBox->setFont(font);
+#endif
 }
 
