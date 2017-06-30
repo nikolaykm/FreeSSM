@@ -58,15 +58,17 @@ ControlUnitDialog::ControlUnitDialog(QString title, AbstractDiagInterface *diagI
         showFullScreen();
     #endif
 
-	// Add status bar for the diagnostic interface
-	main_verticalLayout->setContentsMargins(-1, -1, -1, 4);
-	_ifstatusbar = new DiagInterfaceStatusBar(this);
-	main_verticalLayout->addWidget(_ifstatusbar);
-	_ifstatusbar->show();
-	_ifstatusbar->setInterfaceName( QString::fromStdString( diagInterface->name() ), Qt::blue );
-	_ifstatusbar->setInterfaceVersion( QString::fromStdString( diagInterface->version() ), Qt::blue );
-	_ifstatusbar->setProtocolName("---");
-	_ifstatusbar->setBaudRate("---");
+    #ifndef SMALL_RESOLUTION
+        // Add status bar for the diagnostic interface
+        main_verticalLayout->setContentsMargins(-1, -1, -1, 4);
+        _ifstatusbar = new DiagInterfaceStatusBar(this);
+        main_verticalLayout->addWidget(_ifstatusbar);
+        _ifstatusbar->show();
+        _ifstatusbar->setInterfaceName( QString::fromStdString( diagInterface->name() ), Qt::blue );
+        _ifstatusbar->setInterfaceVersion( QString::fromStdString( diagInterface->version() ), Qt::blue );
+        _ifstatusbar->setProtocolName("---");
+        _ifstatusbar->setBaudRate("---");
+    #endif
 	// Connect signals and slots:
 	connect( exit_pushButton, SIGNAL( released() ), this, SLOT( close() ) );
 }

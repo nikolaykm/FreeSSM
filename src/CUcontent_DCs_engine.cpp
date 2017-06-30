@@ -89,8 +89,9 @@ CUcontent_DCs_engine::CUcontent_DCs_engine(QWidget *parent) : CUcontent_DCs_abst
 	latestCCCCs_tableWidget->setEnabled( false );
 	memorizedCCCCsTitle_label->setEnabled( false );
 	memorizedCCCCs_tableWidget->setEnabled( false );
-	// Disable "Cruise Control"-tab:
-	DCgroups_tabWidget->setTabEnabled(1, false);
+    // Disable "Cruise Control"-tabs:
+    DCgroups_tabWidget->setTabEnabled(2, false);
+    DCgroups_tabWidget->setTabEnabled(3, false);
     #ifndef SMALL_RESOLUTION
         // Disable "print"-button:
         printDClist_pushButton->setDisabled(true);
@@ -187,13 +188,17 @@ bool CUcontent_DCs_engine::setup(SSMprotocol *SSMPdev)
         printDClist_pushButton->setEnabled(false);
         disconnect(printDClist_pushButton, SIGNAL( released() ), this, SLOT( printDCprotocol() ));
     #endif
-	// Enable/disable "Cruise Control"-tab:
+    // Enable/disable "Cruise Control"-tabs:
 	if (ok && (latestCCCCs_sup || memCCCCs_sup))
-		DCgroups_tabWidget->setTabEnabled(1, true);
+    {
+        DCgroups_tabWidget->setTabEnabled(2, true);
+        DCgroups_tabWidget->setTabEnabled(3, true);
+    }
 	else
 	{
 		DCgroups_tabWidget->setCurrentIndex(0);
-		DCgroups_tabWidget->setTabEnabled(1, false);
+        DCgroups_tabWidget->setTabEnabled(2, false);
+        DCgroups_tabWidget->setTabEnabled(3, false);
 	}
 	// Connect start-slot:
 	if (_SSMPdev)
