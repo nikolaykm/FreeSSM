@@ -37,37 +37,33 @@ CUcontent_DCs_engine::CUcontent_DCs_engine(QWidget *parent) : CUcontent_DCs_abst
 	setupUi(this);
 	setupUiFonts();
 
-    #ifndef SMALL_RESOLUTION
     // Set column widths:
-        QHeaderView *headerview;
-        currOrTempDTCs_tableWidget->setColumnWidth (0, 70);
-        headerview = currOrTempDTCs_tableWidget->horizontalHeader();
-        headerview->setResizeMode(0,QHeaderView::Interactive);
-        headerview->setResizeMode(1,QHeaderView::Stretch);
-        histOrMemDTCs_tableWidget->setColumnWidth (0, 70);
-        headerview = histOrMemDTCs_tableWidget->horizontalHeader();
-        headerview->setResizeMode(0,QHeaderView::Interactive);
-        headerview->setResizeMode(1,QHeaderView::Stretch);
-        latestCCCCs_tableWidget->setColumnWidth (0, 70);
-        headerview = latestCCCCs_tableWidget->horizontalHeader();
-        headerview->setResizeMode(0,QHeaderView::Interactive);
-        headerview->setResizeMode(1,QHeaderView::Stretch);
-        memorizedCCCCs_tableWidget->setColumnWidth (0, 70);
-        headerview = memorizedCCCCs_tableWidget->horizontalHeader();
-        headerview->setResizeMode(0,QHeaderView::Interactive);
-        headerview->setResizeMode(1,QHeaderView::Stretch);
-        // Set table row resize behavior:
-        headerview = currOrTempDTCs_tableWidget->verticalHeader();
-        headerview->setResizeMode(QHeaderView::Fixed);
-        headerview = histOrMemDTCs_tableWidget->verticalHeader();
-        headerview->setResizeMode(QHeaderView::Fixed);
-        headerview = latestCCCCs_tableWidget->verticalHeader();
-        headerview->setResizeMode(QHeaderView::Fixed);
-        headerview = memorizedCCCCs_tableWidget->verticalHeader();
-        headerview->setResizeMode(QHeaderView::Fixed);
-    #else
-    #endif
-
+    QHeaderView *headerview;
+    currOrTempDTCs_tableWidget->setColumnWidth (0, 70);
+    headerview = currOrTempDTCs_tableWidget->horizontalHeader();
+    headerview->setResizeMode(0,QHeaderView::Interactive);
+    headerview->setResizeMode(1,QHeaderView::Stretch);
+    histOrMemDTCs_tableWidget->setColumnWidth (0, 70);
+    headerview = histOrMemDTCs_tableWidget->horizontalHeader();
+    headerview->setResizeMode(0,QHeaderView::Interactive);
+    headerview->setResizeMode(1,QHeaderView::Stretch);
+    latestCCCCs_tableWidget->setColumnWidth (0, 70);
+    headerview = latestCCCCs_tableWidget->horizontalHeader();
+    headerview->setResizeMode(0,QHeaderView::Interactive);
+    headerview->setResizeMode(1,QHeaderView::Stretch);
+    memorizedCCCCs_tableWidget->setColumnWidth (0, 70);
+    headerview = memorizedCCCCs_tableWidget->horizontalHeader();
+    headerview->setResizeMode(0,QHeaderView::Interactive);
+    headerview->setResizeMode(1,QHeaderView::Stretch);
+    // Set table row resize behavior:
+    headerview = currOrTempDTCs_tableWidget->verticalHeader();
+    headerview->setResizeMode(QHeaderView::Fixed);
+    headerview = histOrMemDTCs_tableWidget->verticalHeader();
+    headerview->setResizeMode(QHeaderView::Fixed);
+    headerview = latestCCCCs_tableWidget->verticalHeader();
+    headerview->setResizeMode(QHeaderView::Fixed);
+    headerview = memorizedCCCCs_tableWidget->verticalHeader();
+    headerview->setResizeMode(QHeaderView::Fixed);
 
 	/* NOTE: Current method for calculating ther nr. of needed rows
 	 * assumes all rows to have the same constsant height */

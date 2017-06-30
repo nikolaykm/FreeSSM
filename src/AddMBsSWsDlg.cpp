@@ -36,6 +36,11 @@ AddMBsSWsDlg::AddMBsSWsDlg(QWidget *parent, std::vector<mb_dt> supportedMBs, std
 	//   GNOME 3 at least: this also enables fast window management e.g. "View split on left" (Super-Left), "... right" (Super-Right)
 	setWindowFlags( Qt::Window );
 
+    #ifndef SMALL_RESOLUTION
+    #else
+        showFullScreen();
+    #endif
+
 	iconMB = QIcon(":/icons/freessm/32x32/MB.png");
 	iconSW = QIcon(":/icons/freessm/32x32/SW.png");
 	auto headerview = MBsSWs_tableWidget->horizontalHeader();
