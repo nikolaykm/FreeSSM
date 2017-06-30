@@ -66,8 +66,13 @@ CUcontent_DCs_engine::CUcontent_DCs_engine(QWidget *parent) : CUcontent_DCs_abst
         headerview = memorizedCCCCs_tableWidget->verticalHeader();
         headerview->setResizeMode(QHeaderView::Fixed);
     #else
-        DCclearingInfo_label->hide();
-        printDClist_pushButton->hide();
+        QLayoutItem *child;
+        while ((child = gridLayout_2->takeAt(0)) != 0)
+        {
+            gridLayout_2->removeItem(child);
+            delete child;
+        }
+        delete gridLayout_2;
     #endif
 
 
@@ -93,14 +98,18 @@ CUcontent_DCs_engine::CUcontent_DCs_engine(QWidget *parent) : CUcontent_DCs_abst
 	memorizedCCCCs_tableWidget->setEnabled( false );
 	// Disable "Cruise Control"-tab:
 	DCgroups_tabWidget->setTabEnabled(1, false);
-	// Disable "print"-button:
-	printDClist_pushButton->setDisabled(true);
+    #ifndef SMALL_RESOLUTION
+        // Disable "print"-button:
+        printDClist_pushButton->setDisabled(true);
+    #endif
 }
 
 
 CUcontent_DCs_engine::~CUcontent_DCs_engine()
 {
-	disconnect(printDClist_pushButton, SIGNAL( released() ), this, SLOT( printDCprotocol() ));
+    #ifndef SMALL_RESOLUTION
+        disconnect(printDClist_pushButton, SIGNAL( released() ), this, SLOT( printDCprotocol() ));
+    #endif
 	disconnectGUIelements();
 }
 
@@ -180,9 +189,11 @@ bool CUcontent_DCs_engine::setup(SSMprotocol *SSMPdev)
 		setDCtableContent(memorizedCCCCs_tableWidget, QStringList(""), QStringList(""));
 	memorizedCCCCsTitle_label->setEnabled(memCCCCs_sup);
 	memorizedCCCCs_tableWidget->setEnabled(memCCCCs_sup);
-	// Deactivate and disconnect "Print"-button:
-	printDClist_pushButton->setEnabled(false);
-	disconnect(printDClist_pushButton, SIGNAL( released() ), this, SLOT( printDCprotocol() ));
+    #ifndef SMALL_RESOLUTION
+        // Deactivate and disconnect "Print"-button:
+        printDClist_pushButton->setEnabled(false);
+        disconnect(printDClist_pushButton, SIGNAL( released() ), this, SLOT( printDCprotocol() ));
+    #endif
 	// Enable/disable "Cruise Control"-tab:
 	if (ok && (latestCCCCs_sup || memCCCCs_sup))
 		DCgroups_tabWidget->setTabEnabled(1, true);
@@ -228,9 +239,11 @@ void CUcontent_DCs_engine::connectGUIelements()
 		updateCCmemorizedCCsContent(QStringList(""), QStringList(tr("----- Reading data... Please wait ! -----")));
 		connect(_SSMPdev, SIGNAL( memorizedCCCCs(QStringList, QStringList) ), this, SLOT( updateCCmemorizedCCsContent(QStringList, QStringList) ));
 	}
-	// Connect and disable print-button temporary (until all memories have been read once):
-	printDClist_pushButton->setDisabled(true);
-	connect(printDClist_pushButton, SIGNAL( released() ), this, SLOT( printDCprotocol() ));
+    #ifndef SMALL_RESOLUTION
+        // Connect and disable print-button temporary (until all memories have been read once):
+        printDClist_pushButton->setDisabled(true);
+        connect(printDClist_pushButton, SIGNAL( released() ), this, SLOT( printDCprotocol() ));
+    #endif
 	// NOTE: using released() instead of pressed() as workaround for a Qt-Bug occuring under MS Windows
 }
 
@@ -271,8 +284,10 @@ void CUcontent_DCs_engine::updateCurrentOrTemporaryDTCsContent(QStringList currO
 			currOrTempDTCdescriptions << tr("----- No Trouble Codes -----");
 		}
 		setDCtableContent(currOrTempDTCs_tableWidget, currOrTempDTCs, currOrTempDTCdescriptions);
-		// Activate "Print" button:
-		printDClist_pushButton->setEnabled(true);
+        #ifndef SMALL_RESOLUTION
+            // Activate "Print" button:
+            printDClist_pushButton->setEnabled(true);
+        #endif
 	}
 }
 
@@ -291,8 +306,10 @@ void CUcontent_DCs_engine::updateHistoricOrMemorizedDTCsContent(QStringList hist
 			histOrMemDTCdescriptions << tr("----- No Trouble Codes -----");
 		}
 		setDCtableContent(histOrMemDTCs_tableWidget, histOrMemDTCs, histOrMemDTCdescriptions);
-		// Activate "Print" button:
-		printDClist_pushButton->setEnabled(true);
+        #ifndef SMALL_RESOLUTION
+            // Activate "Print" button:
+            printDClist_pushButton->setEnabled(true);
+        #endif
 	}
 }
 
@@ -311,8 +328,10 @@ void CUcontent_DCs_engine::updateCClatestCCsContent(QStringList latestCCCCs, QSt
 			latestCCCCdescriptions << tr("----- No Cancel Codes -----");
 		}
 		setDCtableContent(latestCCCCs_tableWidget, latestCCCCs, latestCCCCdescriptions);
-		// Activate "Print" button:
-		printDClist_pushButton->setEnabled(true);
+        #ifndef SMALL_RESOLUTION
+            // Activate "Print" button:
+            printDClist_pushButton->setEnabled(true);
+        #endif
 	}
 }
 
@@ -331,8 +350,10 @@ void CUcontent_DCs_engine::updateCCmemorizedCCsContent(QStringList memorizedCCCC
 			memorizedCCCCdescriptions << tr("----- No Cancel Codes -----");
 		}
 		setDCtableContent(memorizedCCCCs_tableWidget, memorizedCCCCs, memorizedCCCCdescriptions);
-		// Activate "Print" button:
-		printDClist_pushButton->setEnabled(true);
+        #ifndef SMALL_RESOLUTION
+            // Activate "Print" button:
+            printDClist_pushButton->setEnabled(true);
+        #endif
 	}
 }
 
