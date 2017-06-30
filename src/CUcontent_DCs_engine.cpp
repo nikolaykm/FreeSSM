@@ -66,13 +66,6 @@ CUcontent_DCs_engine::CUcontent_DCs_engine(QWidget *parent) : CUcontent_DCs_abst
         headerview = memorizedCCCCs_tableWidget->verticalHeader();
         headerview->setResizeMode(QHeaderView::Fixed);
     #else
-        QLayoutItem *child;
-        while ((child = gridLayout_2->takeAt(0)) != 0)
-        {
-            gridLayout_2->removeItem(child);
-            delete child;
-        }
-        delete gridLayout_2;
     #endif
 
 
