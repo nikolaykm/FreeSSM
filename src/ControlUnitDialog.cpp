@@ -81,7 +81,9 @@ ControlUnitDialog::~ControlUnitDialog()
 		delete _infoWidget;
 	if (_contentWidget)
 		delete _contentWidget;
-	delete _ifstatusbar;
+    #ifndef SMALL_RESOLUTION
+        delete _ifstatusbar;
+    #endif
 	if (_SSMPdev)
 	{
 		disconnect( _SSMPdev, SIGNAL( commError() ), this, SLOT( communicationError() ) );
@@ -216,6 +218,7 @@ SSMprotocol::CUsetupResult_dt ControlUnitDialog::probeProtocol(SSMprotocol::CUty
 			}
 		}
 	}
+    #ifndef SMALL_RESOLUTION
 	// Update diagnostic interface status bar:
 	if (_SSMPdev != NULL)
 	{
@@ -238,6 +241,7 @@ SSMprotocol::CUsetupResult_dt ControlUnitDialog::probeProtocol(SSMprotocol::CUty
 		}
 		_ifstatusbar->setBaudRate(bstr, Qt::darkGreen);
 	}
+    #endif
 	return result;
 }
 
