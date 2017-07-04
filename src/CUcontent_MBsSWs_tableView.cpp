@@ -301,6 +301,7 @@ bool CUcontent_MBsSWs_tableView::eventFilter(QObject *obj, QEvent *event)
 
 void CUcontent_MBsSWs_tableView::setupUiFonts()
 {
+#ifndef SMALL_RESOLUTION
 	// SET FONT FAMILY AND FONT SIZE
 	// OVERWRITES SETTINGS OF ui_CUcontent_MBsSWs_tableView.h (made with QDesigner)
 	QFont contentfont = QApplication::font();
@@ -315,4 +316,5 @@ void CUcontent_MBsSWs_tableView::setupUiFonts()
 	resetMinMax_pushButton->setFont(contentfont);
 	showMin_pushButton->setFont(contentfont);
 	showMax_pushButton->setFont(contentfont);
+#endif
 }

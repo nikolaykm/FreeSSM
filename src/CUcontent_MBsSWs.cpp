@@ -1116,6 +1116,7 @@ void CUcontent_MBsSWs::setupTimeModeUiElements()
 
 void CUcontent_MBsSWs::setupUiFonts()
 {
+#ifndef SMALL_RESOLUTION
 	// SET FONT FAMILY AND FONT SIZE
 	// OVERWRITES SETTINGS OF ui_CUcontent_MBsSWs.h (made with QDesigner)
 	QFont contentfont = QApplication::font();
@@ -1134,6 +1135,7 @@ void CUcontent_MBsSWs::setupUiFonts()
 	_MBSWrefreshTimeValue_label->setFont(contentfont);
 	// Tab widget:
 	MBSWviews_tabWidget->setFont(contentfont);
+#endif
 }
 
 
