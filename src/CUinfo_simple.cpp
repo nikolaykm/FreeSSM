@@ -53,6 +53,7 @@ void CUinfo_simple::setNrOfSupportedMBsSWs(unsigned int MBs, unsigned int SWs)
 
 void CUinfo_simple::setupUiFonts()
 {
+#ifndef SMALL_RESOLUTION
 	// SET FONT FAMILY AND FONT SIZE
 	// OVERWRITES SETTINGS OF ui_CUinfo_Transmission.h (made with QDesigner)
 	QFont appfont = QApplication::font();
@@ -96,5 +97,6 @@ void CUinfo_simple::setupUiFonts()
 	font.setFamily(appfont.family());
 	font.setPixelSize(12);	// 9pts
 	nrofswitches_label->setFont(font);
+#endif
 }
 

@@ -109,6 +109,7 @@ void CUinfo_Engine::setImmobilizerSupported(bool sup)
 
 void CUinfo_Engine::setupUiFonts()
 {
+#ifndef SMALL_RESOLUTION
 	// SET FONT FAMILY AND FONT SIZE
 	// OVERWRITES SETTINGS OF ui_CUinfo_Engine.h (made with QDesigner)
 	QFont appfont = QApplication::font();
@@ -172,5 +173,6 @@ void CUinfo_Engine::setupUiFonts()
 	font.setFamily(appfont.family());
 	font.setPixelSize(12);	// 9pts
 	immosupportedtitle_label->setFont(font);
+#endif
 }
 

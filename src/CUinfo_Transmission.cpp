@@ -62,6 +62,7 @@ void CUinfo_Transmission::setOBD2Supported(bool sup)
 
 void CUinfo_Transmission::setupUiFonts()
 {
+#ifndef SMALL_RESOLUTION
 	// SET FONT FAMILY AND FONT SIZE
 	// OVERWRITES SETTINGS OF ui_CUinfo_Transmission.h (made with QDesigner)
 	QFont appfont = QApplication::font();
@@ -109,5 +110,6 @@ void CUinfo_Transmission::setupUiFonts()
 	font.setFamily(appfont.family());
 	font.setPixelSize(12);	// 9pts
 	obd2systemTitle_label->setFont(font);
+#endif
 }
 
