@@ -51,6 +51,7 @@ CUcontent_DCs_twoMemories::CUcontent_DCs_twoMemories(QWidget *parent) : CUconten
 	histOrMemDTCs_tableWidget->viewport()->installEventFilter(this);
 	// *** Set initial content ***:
 	// Set provisional titles:
+#ifndef SMALL_RESOLUTION
 	currOrTempDTCsTitle_label->setText( tr("Temporary Diagnostic Trouble Code(s):") );
 	histOrMemDTCsTitle_label->setText( tr("Memorized Diagnostic Trouble Code(s):") );
 	// Disable tables and their titles:
@@ -58,7 +59,6 @@ CUcontent_DCs_twoMemories::CUcontent_DCs_twoMemories(QWidget *parent) : CUconten
 	currOrTempDTCs_tableWidget->setEnabled( false );
 	histOrMemDTCsTitle_label->setEnabled( false );
 	histOrMemDTCs_tableWidget->setEnabled( false );
-#ifndef SMALL_RESOLUTION
 	// Disable "print"-button:
 	printDClist_pushButton->setDisabled(true);
 #endif
@@ -100,6 +100,7 @@ bool CUcontent_DCs_twoMemories::setup(SSMprotocol *SSMPdev)
 		currOrTempDTCs_sup = ((_supportedDCgroups & SSMprotocol::currentDTCs_DCgroup) || (_supportedDCgroups & SSMprotocol::temporaryDTCs_DCgroup));
 		histOrMemDTCs_sup = ((_supportedDCgroups & SSMprotocol::historicDTCs_DCgroup) || (_supportedDCgroups & SSMprotocol::memorizedDTCs_DCgroup));
 	}
+#ifndef SMALL_RESOLUTION
 	// Set titles of the DTC-tables
 	if ( obd2DTCformat )
 		title = tr("Temporary Diagnostic Trouble Code(s):");
@@ -111,18 +112,23 @@ bool CUcontent_DCs_twoMemories::setup(SSMprotocol *SSMPdev)
 	else
 		title = tr("Historic Diagnostic Trouble Code(s):");
 	histOrMemDTCsTitle_label->setText( title );
+#endif
 	// DC-tables and titles:
 	if (ok && !currOrTempDTCs_sup)
 		setDCtableContent(currOrTempDTCs_tableWidget, QStringList(""), QStringList(tr("----- Not supported by ECU -----")));
 	else
 		setDCtableContent(currOrTempDTCs_tableWidget, QStringList(""), QStringList(""));
+#ifndef SMALL_RESOLUTION
 	currOrTempDTCsTitle_label->setEnabled(currOrTempDTCs_sup);
+#endif
 	currOrTempDTCs_tableWidget->setEnabled(currOrTempDTCs_sup);
 	if (ok && !histOrMemDTCs_sup)
 		setDCtableContent(histOrMemDTCs_tableWidget, QStringList(""), QStringList(tr("----- Not supported by ECU -----")));
 	else
 		setDCtableContent(histOrMemDTCs_tableWidget, QStringList(""), QStringList(""));
+#ifndef SMALL_RESOLUTION
 	histOrMemDTCsTitle_label->setEnabled(histOrMemDTCs_sup);
+#endif
 	histOrMemDTCs_tableWidget->setEnabled(histOrMemDTCs_sup);
 #ifndef SMALL_RESOLUTION
 	// Deactivate and disconnect "Print"-button:
@@ -220,6 +226,7 @@ void CUcontent_DCs_twoMemories::updateHistoricOrMemorizedDTCsContent(QStringList
 
 void CUcontent_DCs_twoMemories::createDCprintTables(QTextCursor cursor)
 {
+#ifndef SMALL_RESOLUTION
 	QStringList currOrTempDTCcodes = _currOrTempDTCs;
 	QStringList currOrTempDTCdescriptions = _currOrTempDTCdescriptions;
 	QStringList histOrMemDTCcodes = _histOrMemDTCs;
@@ -246,6 +253,7 @@ void CUcontent_DCs_twoMemories::createDCprintTables(QTextCursor cursor)
 		// Insert table with historic/memorized DTCs into text document:
 		insertDCprintTable(cursor, histOrMemDTCsTitle_label->text(), histOrMemDTCcodes, histOrMemDTCdescriptions);
 	}
+#endif
 }
 
 
