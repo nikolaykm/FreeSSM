@@ -703,6 +703,7 @@ void CUcontent_Adjustments::errorMsg(QString title, QString errstr)
 
 void CUcontent_Adjustments::setupUiFonts()
 {
+#ifndef SMALL_RESOLUTION
 	// SET FONT FAMILY AND FONT SIZE
 	// OVERWRITES SETTINGS OF ui_Adjustments.h (made with QDesigner)
 	QFont contentfont = QApplication::font();
@@ -711,6 +712,7 @@ void CUcontent_Adjustments::setupUiFonts()
 	this->setFont(contentfont);
 	adjustments_tableWidget->setFont(contentfont);
 	nonPermanentInfo_label->setFont(contentfont);
+#endif
 }
 
 

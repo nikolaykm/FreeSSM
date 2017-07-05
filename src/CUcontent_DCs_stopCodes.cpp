@@ -194,6 +194,7 @@ bool CUcontent_DCs_stopCodes::eventFilter(QObject *obj, QEvent *event)
 
 void CUcontent_DCs_stopCodes::setupUiFonts()
 {
+#ifndef SMALL_RESOLUTION
 	// SET FONT FAMILY AND FONT SIZE
 	// OVERWRITES SETTINGS OF ui_CUcontent_DCs_transmission.h (made with QDesigner)
 	QFont contentfont = QApplication::font();
@@ -209,6 +210,7 @@ void CUcontent_DCs_stopCodes::setupUiFonts()
 
 	// Print-button:
 	printDClist_pushButton->setFont(contentfont);
+#endif
 }
 
 

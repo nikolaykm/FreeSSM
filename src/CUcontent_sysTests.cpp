@@ -191,6 +191,7 @@ void CUcontent_sysTests::testImmobilizerLine()
 
 void CUcontent_sysTests::setupUiFonts()
 {
+#ifndef SMALL_RESOLUTION
 	// SET FONT FAMILY AND FONT SIZE
 	// OVERWRITES SETTINGS MADE WITH QDESIGNER
 	QFont contentfont = QApplication::font();
@@ -211,6 +212,7 @@ void CUcontent_sysTests::setupUiFonts()
 	// Buttons:
 	startActuatorTest_pushButton->setFont(contentfont);
 	testImmoLine_pushButton->setFont(contentfont);
+#endif
 }
 
 

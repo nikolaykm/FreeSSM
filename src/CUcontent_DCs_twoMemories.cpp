@@ -58,14 +58,18 @@ CUcontent_DCs_twoMemories::CUcontent_DCs_twoMemories(QWidget *parent) : CUconten
 	currOrTempDTCs_tableWidget->setEnabled( false );
 	histOrMemDTCsTitle_label->setEnabled( false );
 	histOrMemDTCs_tableWidget->setEnabled( false );
+#ifndef SMALL_RESOLUTION
 	// Disable "print"-button:
 	printDClist_pushButton->setDisabled(true);
+#endif
 }
 
 
 CUcontent_DCs_twoMemories::~CUcontent_DCs_twoMemories()
 {
+#ifndef SMALL_RESOLUTION
 	disconnect(printDClist_pushButton, SIGNAL( released() ), this, SLOT( printDCprotocol() ));
+#endif
 	disconnectGUIelements();
 }
 
@@ -120,9 +124,11 @@ bool CUcontent_DCs_twoMemories::setup(SSMprotocol *SSMPdev)
 		setDCtableContent(histOrMemDTCs_tableWidget, QStringList(""), QStringList(""));
 	histOrMemDTCsTitle_label->setEnabled(histOrMemDTCs_sup);
 	histOrMemDTCs_tableWidget->setEnabled(histOrMemDTCs_sup);
+#ifndef SMALL_RESOLUTION
 	// Deactivate and disconnect "Print"-button:
 	printDClist_pushButton->setEnabled(false);
 	disconnect(printDClist_pushButton, SIGNAL( released() ), this, SLOT( printDCprotocol() ));
+#endif
 	// Connect start-slot:
 	if (_SSMPdev)
 	{
@@ -150,9 +156,11 @@ void CUcontent_DCs_twoMemories::connectGUIelements()
 		updateHistoricOrMemorizedDTCsContent(QStringList(""), QStringList(tr("----- Reading data... Please wait ! -----")));
 		connect(_SSMPdev, SIGNAL( historicOrMemorizedDTCs(QStringList, QStringList) ), this, SLOT( updateHistoricOrMemorizedDTCsContent(QStringList, QStringList) ));
 	}
+#ifndef SMALL_RESOLUTION
 	// Connect and disable print-button temporary (until all memories have been read once):
 	printDClist_pushButton->setDisabled(true);
 	connect(printDClist_pushButton, SIGNAL( released() ), this, SLOT( printDCprotocol() ));
+#endif
 	// NOTE: using released() instead of pressed() as workaround for a Qt-Bug occuring under MS Windows
 }
 
@@ -179,8 +187,11 @@ void CUcontent_DCs_twoMemories::updateCurrentOrTemporaryDTCsContent(QStringList 
 			currOrTempDTCdescriptions << tr("----- No Trouble Codes -----");
 		}
 		setDCtableContent(currOrTempDTCs_tableWidget, currOrTempDTCs, currOrTempDTCdescriptions);
+#ifndef SMALL_RESOLUTION
 		// Activate "Print" button:
 		printDClist_pushButton->setEnabled(true);
+#endif
+
 	}
 }
 
@@ -199,8 +210,10 @@ void CUcontent_DCs_twoMemories::updateHistoricOrMemorizedDTCsContent(QStringList
 			histOrMemDTCdescriptions << tr("----- No Trouble Codes -----");
 		}
 		setDCtableContent(histOrMemDTCs_tableWidget, histOrMemDTCs, histOrMemDTCdescriptions);
+#ifndef SMALL_RESOLUTION
 		// Activate "Print" button:
 		printDClist_pushButton->setEnabled(true);
+#endif
 	}
 }
 
@@ -272,6 +285,7 @@ bool CUcontent_DCs_twoMemories::eventFilter(QObject *obj, QEvent *event)
 
 void CUcontent_DCs_twoMemories::setupUiFonts()
 {
+#ifndef SMALL_RESOLUTION
 	// SET FONT FAMILY AND FONT SIZE
 	// OVERWRITES SETTINGS OF ui_CUcontent_DCs_transmission.h (made with QDesigner)
 	QFont contentfont = QApplication::font();
@@ -290,6 +304,7 @@ void CUcontent_DCs_twoMemories::setupUiFonts()
 	DCclearingInfo_label->setFont(contentfont);
 	// Print-button:
 	printDClist_pushButton->setFont(contentfont);
+#endif
 }
 
 
