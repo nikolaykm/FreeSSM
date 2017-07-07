@@ -31,7 +31,12 @@ ActuatorTestDlg::ActuatorTestDlg(QWidget *parent, SSMprotocol *SSMPdev, QString 
 	setupUi(this);
 	setupUiFonts();
 	exit_pushButton->setEnabled(false);
+#ifndef SMALL_RESOLUTION
 	this->show();
+#else
+    setWindowFlags( Qt::Window );
+    this->showFullScreen();
+#endif
 	actuator_label->setText(actuatorTitle);
 	status_label->setText(tr("Checking engine status..."));
 	// CHECK IF ENGINE IS RUNNING:
@@ -117,6 +122,7 @@ void ActuatorTestDlg::closeEvent(QCloseEvent *event)
 
 void ActuatorTestDlg::setupUiFonts()
 {
+#ifndef SMALL_RESOLUTION
 	// SET FONT FAMILY AND FONT SIZE
 	// OVERWRITES SETTINGS OF ui_ActuatorTestDlg.h (made with QDesigner)
 	QFont appfont = QApplication::font();
@@ -148,5 +154,6 @@ void ActuatorTestDlg::setupUiFonts()
 	font.setFamily(appfont.family());
 	font.setPixelSize(13);	// 10pts
 	exit_pushButton->setFont(font);
+#endif
 }
 

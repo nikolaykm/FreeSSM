@@ -27,6 +27,11 @@ About::About(QWidget *parent, QString language) : QDialog(parent)
 	// Setup UI:
 	setupUi(this);
 	setupUiFonts();
+#ifndef SMALL_RESOLUTION
+#else
+    setWindowFlags( Qt::Window );
+    this->showFullScreen();
+#endif
 	// Display title/program version:
 	progversion_label->setText(progversion_label->text() + " " + QApplication::applicationVersion());
 	// Load licence text and changelog:
@@ -113,6 +118,7 @@ void About::showLicense()
 
 void About::setupUiFonts()
 {
+#ifndef SMALL_RESOLUTION
 	// SET FONT FAMILY AND FONT SIZE
 	// OVERWRITES SETTINGS OF ui_About.h (made with QDesigner)
 	QFont appfont = QApplication::font();
@@ -320,6 +326,7 @@ void About::setupUiFonts()
 	font.setFamily(appfont.family());
 	font.setPixelSize(11);	// 8pts
 	trademarksInfo_label->setFont(font);
+#endif
 }
 
 
