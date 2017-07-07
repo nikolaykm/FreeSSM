@@ -239,7 +239,9 @@ FreeSSM::~FreeSSM()
 	disconnect( about_pushButton, SIGNAL( released() ), this, SLOT( about() ) );
 	disconnect( exit_pushButton, SIGNAL( released() ), this, SLOT( close() ) );
 	delete _dump_action;
+#ifndef SMALL_RESOLUTION
 	delete _progtitle_label;
+#endif
 	if (_translator != NULL)
 	{
 		QApplication::removeTranslator(_translator);
