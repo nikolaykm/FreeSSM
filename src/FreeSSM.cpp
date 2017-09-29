@@ -18,7 +18,21 @@
  */
 
 #include "FreeSSM.h"
-
+#include "Languages.h"
+#include "SerialPassThroughDiagInterface.h"
+#include "J2534DiagInterface.h"
+#include "ATcommandControlledDiagInterface.h"
+#include "SSMP1communication.h"
+#include "SSMP2communication.h"
+#include "libFSSM.h"
+#include "EngineDialog.h"
+#include "TransmissionDialog.h"
+#include "ABSdialog.h"
+#include "CruiseControlDialog.h"
+#include "AirConDialog.h"
+#include "Preferences.h"
+#include "About.h"
+#include "SSMCUdata.h"
 
 
 FreeSSM::FreeSSM(QApplication *app)
@@ -32,6 +46,17 @@ FreeSSM::FreeSSM(QApplication *app)
 	QString appsPath( QCoreApplication::applicationDirPath() );
 	// SETUP GUI:
 	setupUi(this);
+
+    bool isMBsSWsBlocksReportingConfigured = false;
+    QStringList cmdline_args = QCoreApplication::arguments();
+    for (int i = 0; i < cmdline_args.size(); ++i)
+    {
+        if (cmdline_args.at(i) == "--reportMBsSWs")
+        {
+            isMBsSWsBlocksReportingConfigured = true;
+        }
+    }
+
 	setWindowFlags( windowFlags() & ~Qt::WindowMaximizeButtonHint );	// only necessary for MS Windows
 	setupUiFonts();
 #ifndef SMALL_RESOLUTION
@@ -55,6 +80,7 @@ FreeSSM::FreeSSM(QApplication *app)
 #else
     showFullScreen();
 #endif
+
 	// LOAD PREFERENCES FROM FILE:
 	QString savedinterfacefilename = "";
 	QString savedlanguage = "";
@@ -212,7 +238,7 @@ FreeSSM::FreeSSM(QApplication *app)
 	_dump_action->setShortcut( QKeySequence("Ctrl+Alt+Return") );
 	this->addAction(_dump_action);
 	// CONNECT SIGNALS/SLOTS:
-	connect( engine_pushButton, SIGNAL( released() ), this, SLOT( engine() ) );
+    connect( engine_pushButton, SIGNAL( released() ), this, SLOT( engine() ) );
 	connect( transmission_pushButton, SIGNAL( released() ), this, SLOT( transmission() ) );
 	connect( absvdc_pushButton, SIGNAL( released() ), this, SLOT( abs() ) );
 	connect( cruisecontrol_pushButton, SIGNAL( released() ), this, SLOT( cruisecontrol() ) );
@@ -223,6 +249,11 @@ FreeSSM::FreeSSM(QApplication *app)
 	connect( exit_pushButton, SIGNAL( released() ), this, SLOT( close() ) );
 	// NOTE: using released() instead of pressed() as workaround for a Qt-Bug occuring under MS Windows
 	connect( _dump_action, SIGNAL(triggered()), this, SLOT(dumpCUdata()) );
+
+    if (isMBsSWsBlocksReportingConfigured)
+    {
+        engine(isMBsSWsBlocksReportingConfigured);
+    }
 }
 
 
@@ -255,13 +286,13 @@ FreeSSM::~FreeSSM()
 }
 
 
-void FreeSSM::engine()
+void FreeSSM::engine(bool isMBsSWsReportingEnabled)
 {
 	if (_dumping) return;
 	AbstractDiagInterface *diagInterface = initInterface();
 	if (diagInterface)
 	{
-		EngineDialog *enginedialog = new EngineDialog(diagInterface, _language);
+        EngineDialog *enginedialog = new EngineDialog(diagInterface, _language, isMBsSWsReportingEnabled);
 		if (!enginedialog->isHidden())
 			enginedialog->exec();
 		delete enginedialog;

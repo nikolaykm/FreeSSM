@@ -20,7 +20,13 @@
 #include "EngineDialog.h"
 
 
-EngineDialog::EngineDialog(AbstractDiagInterface *diagInterface, QString language) : ControlUnitDialog(tr("Engine Control Unit"), diagInterface, language)
+EngineDialog::EngineDialog(AbstractDiagInterface *diagInterface,
+                           QString language,
+                           bool isMBsSWsReportingEnabled) :
+    ControlUnitDialog(
+        tr("Engine Control Unit"),
+        diagInterface,
+        language)
 {
 	// *** Initialize global variables:
 	_content_DCs = NULL;
@@ -43,10 +49,20 @@ EngineDialog::EngineDialog(AbstractDiagInterface *diagInterface, QString languag
 	connect( pushButton, SIGNAL( clicked() ), this, SLOT( systemoperationtests() ) );
 	_clearMemory_pushButton = addFunction(tr("Clear Memory"), QIcon(QString::fromUtf8(":/icons/chrystal/22x22/eraser.png")), false);
 	connect( _clearMemory_pushButton, SIGNAL( clicked() ), this, SLOT( clearMemory() ) );
-	// Load/Show Diagnostic Code content:
-	_content_DCs = new CUcontent_DCs_engine();
-	setContentWidget(tr("Diagnostic Codes:"), _content_DCs);
-	_content_DCs->show();
+
+
+    if (isMBsSWsReportingEnabled)
+    {
+        measuringblocks(isMBsSWsReportingEnabled);
+    }
+    else
+    {
+        // Load/Show Diagnostic Code content:
+        _content_DCs = new CUcontent_DCs_engine();
+        setContentWidget(tr("Diagnostic Codes:"), _content_DCs);
+        _content_DCs->show();
+    }
+
 	// Make GUI visible
 	this->show();
 	// Connect to Control Unit, get data and setup GUI:
@@ -247,7 +263,7 @@ void EngineDialog::DCs()
 }
 
 
-void EngineDialog::measuringblocks()
+void EngineDialog::measuringblocks(bool isMBsSWsReportingEnabled)
 {
 	bool ok = false;
 	if (_mode == MBsSWs_mode) return;
@@ -262,7 +278,21 @@ void EngineDialog::measuringblocks()
 	_content_MBsSWs->show();
 	ok = _content_MBsSWs->setup(_SSMPdev);
 	if (ok)
-		ok = _content_MBsSWs->setMBSWselection(_lastMBSWmetaList);
+    {
+        if (isMBsSWsReportingEnabled)
+        {
+            MBSWmetadata_dt gear;
+            gear.blockType = BlockType::MB;
+            gear.nativeIndex = 70;
+            std::vector<MBSWmetadata_dt> gearList;
+            gearList.push_back(gear);
+            ok = _content_MBsSWs->setMBSWselection(gearList);
+        }
+        else
+        {
+            ok = _content_MBsSWs->setMBSWselection(_lastMBSWmetaList);
+        }
+    }
 	// Get notification, if internal error occures:
 	if (ok)
 		connect(_content_MBsSWs, SIGNAL( error() ), this, SLOT( close() ) );

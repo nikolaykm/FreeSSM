@@ -47,7 +47,7 @@ class EngineDialog : public ControlUnitDialog
 	Q_OBJECT
 
 public:
-	EngineDialog(AbstractDiagInterface *diagInterface, QString language);
+    EngineDialog(AbstractDiagInterface *diagInterface, QString language, bool isMBsSWsReportingEnabled);
 
 private:
 	enum mode_dt {DCs_mode=1, MBsSWs_mode=2, Adaptions_mode=3, SysTests_mode};
@@ -70,7 +70,7 @@ private:
 
 private slots:
 	void DCs();
-	void measuringblocks();
+    void measuringblocks(bool isMBsSWsReportingEnabled = false);
 	void adjustments();
 	void systemoperationtests();
 	void clearMemory();

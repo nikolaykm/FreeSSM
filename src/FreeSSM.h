@@ -21,29 +21,9 @@
 #define FREESSM_H
 
 
-
 #include <QtGui>
-#include "Languages.h"
 #include "AbstractDiagInterface.h"
-#include "SerialPassThroughDiagInterface.h"
-#include "J2534DiagInterface.h"
-#include "ATcommandControlledDiagInterface.h"
-#include "SSMP1communication.h"
-#include "SSMP2communication.h"
-#include "libFSSM.h"
-#include "EngineDialog.h"
-#include "TransmissionDialog.h"
-#include "ABSdialog.h"
-#include "CruiseControlDialog.h"
-#include "AirConDialog.h"
-#include "Preferences.h"
-#include "About.h"
-
 #include "ui_FreeSSM.h"
-
-#include "SSMCUdata.h"
-
-
 
 class FreeSSM : public QMainWindow, private Ui::FreeSSM_MainWindow
 {
@@ -70,7 +50,7 @@ public:
 	~FreeSSM();
 
 private slots:
-	void engine();
+    void engine(bool isMBsSWsReportingEnabled = false);
 	void transmission();
 	void abs();
 	void cruisecontrol();
