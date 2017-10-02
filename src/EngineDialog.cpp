@@ -287,6 +287,7 @@ void EngineDialog::measuringblocks(bool isMBsSWsReportingEnabled)
             std::vector<MBSWmetadata_dt> gearList;
             gearList.push_back(gear);
             ok = _content_MBsSWs->setMBSWselection(gearList);
+            _content_MBsSWs->startMBSWreading();
         }
         else
         {
