@@ -283,7 +283,7 @@ void EngineDialog::measuringblocks(bool isMBsSWsReportingEnabled)
         {
             MBSWmetadata_dt gear;
             gear.blockType = BlockType::MB;
-            gear.nativeIndex = 70;
+            gear.nativeIndex = 1;
             std::vector<MBSWmetadata_dt> gearList;
             gearList.push_back(gear);
             ok = _content_MBsSWs->setMBSWselection(gearList);

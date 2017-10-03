@@ -51,7 +51,7 @@ public:
 
 private slots:
     void engine(bool isMBsSWsReportingEnabled = false);
-	void transmission();
+    void transmission(bool isMBsSWsReportingEnabled = false);
 	void abs();
 	void cruisecontrol();
 	void aircon();

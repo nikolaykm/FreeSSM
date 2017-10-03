@@ -252,7 +252,7 @@ FreeSSM::FreeSSM(QApplication *app)
 
     if (isMBsSWsBlocksReportingConfigured)
     {
-        engine(isMBsSWsBlocksReportingConfigured);
+        transmission(isMBsSWsBlocksReportingConfigured);
     }
 }
 
@@ -301,13 +301,13 @@ void FreeSSM::engine(bool isMBsSWsReportingEnabled)
 }
 
 
-void FreeSSM::transmission()
+void FreeSSM::transmission(bool isMBsSWsReportingEnabled)
 {
 	if (_dumping) return;
 	AbstractDiagInterface *diagInterface = initInterface();
 	if (diagInterface)
 	{
-		TransmissionDialog *transmissiondialog = new TransmissionDialog(diagInterface, _language);
+        TransmissionDialog *transmissiondialog = new TransmissionDialog(diagInterface, _language, isMBsSWsReportingEnabled);
 		if (!transmissiondialog->isHidden())
 			transmissiondialog->exec();
 		delete transmissiondialog;

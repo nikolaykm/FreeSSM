@@ -46,7 +46,7 @@ class TransmissionDialog : public ControlUnitDialog
 	Q_OBJECT
 
 public:
-	TransmissionDialog(AbstractDiagInterface *diagInterface, QString language);
+    TransmissionDialog(AbstractDiagInterface *diagInterface, QString language, bool isMBsSWsReportingEnabled);
 
 private:
 	enum mode_dt {DCs_mode=1, MBsSWs_mode=2, Adaptions_mode=3};
@@ -71,7 +71,7 @@ private:
 
 private slots:
 	void DTCs();
-	void measuringblocks();
+    void measuringblocks(bool isMBsSWsReportingEnabled = false);
 	void adjustments();
 	void clearMemory();
 	void clearMemory2();
