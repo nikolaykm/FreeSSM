@@ -52,11 +52,7 @@ TransmissionDialog::TransmissionDialog(AbstractDiagInterface *diagInterface,
 	// NOTE: using released() instead of pressed() as workaround for a Qt-Bug occuring under MS Windows
 
 
-    if (isMBsSWsReportingEnabled)
-    {
-        measuringblocks(isMBsSWsReportingEnabled);
-    }
-    else
+    if (!isMBsSWsReportingEnabled)
     {
         // Load/Show Diagnostic Code content:
         _content_DCs = new CUcontent_DCs_twoMemories();
@@ -68,6 +64,12 @@ TransmissionDialog::TransmissionDialog(AbstractDiagInterface *diagInterface,
 	this->show();
 	// Connect to Control Unit, get data and setup GUI:
 	setup();
+
+    if (isMBsSWsReportingEnabled)
+    {
+        measuringblocks(isMBsSWsReportingEnabled);
+    }
+
 }
 
 

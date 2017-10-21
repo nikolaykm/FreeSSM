@@ -51,11 +51,7 @@ EngineDialog::EngineDialog(AbstractDiagInterface *diagInterface,
 	connect( _clearMemory_pushButton, SIGNAL( clicked() ), this, SLOT( clearMemory() ) );
 
 
-    if (isMBsSWsReportingEnabled)
-    {
-        measuringblocks(isMBsSWsReportingEnabled);
-    }
-    else
+    if (!isMBsSWsReportingEnabled)
     {
         // Load/Show Diagnostic Code content:
         _content_DCs = new CUcontent_DCs_engine();
@@ -67,6 +63,12 @@ EngineDialog::EngineDialog(AbstractDiagInterface *diagInterface,
 	this->show();
 	// Connect to Control Unit, get data and setup GUI:
 	setup();
+
+    if (isMBsSWsReportingEnabled)
+    {
+        measuringblocks(isMBsSWsReportingEnabled);
+    }
+
 }
 
 
