@@ -51,13 +51,10 @@ EngineDialog::EngineDialog(AbstractDiagInterface *diagInterface,
 	connect( _clearMemory_pushButton, SIGNAL( clicked() ), this, SLOT( clearMemory() ) );
 
 
-    if (!isMBsSWsReportingEnabled)
-    {
         // Load/Show Diagnostic Code content:
         _content_DCs = new CUcontent_DCs_engine();
         setContentWidget(tr("Diagnostic Codes:"), _content_DCs);
         _content_DCs->show();
-    }
 
 	// Make GUI visible
 	this->show();

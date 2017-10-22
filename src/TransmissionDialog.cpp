@@ -52,13 +52,10 @@ TransmissionDialog::TransmissionDialog(AbstractDiagInterface *diagInterface,
 	// NOTE: using released() instead of pressed() as workaround for a Qt-Bug occuring under MS Windows
 
 
-    if (!isMBsSWsReportingEnabled)
-    {
         // Load/Show Diagnostic Code content:
         _content_DCs = new CUcontent_DCs_twoMemories();
         setContentWidget(tr("Diagnostic Codes:"), _content_DCs);
         _content_DCs->show();
-    }
 
 	// Make GUI visible
 	this->show();
@@ -243,7 +240,7 @@ void TransmissionDialog::measuringblocks(bool isMBsSWsReportingEnabled)
         {
             MBSWmetadata_dt gear;
             gear.blockType = BlockType::SW;
-            gear.nativeIndex = 8;
+            gear.nativeIndex = 7;
             std::vector<MBSWmetadata_dt> gearList;
             gearList.push_back(gear);
             ok = _content_MBsSWs->setMBSWselection(gearList);
