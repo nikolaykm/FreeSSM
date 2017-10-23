@@ -1,5 +1,6 @@
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
+QT += network
 CONFIG += debug_and_release	# warning: specifying EITHER release OR debug breaks the dll installation target on Windows !
 TEMPLATE = app
 TARGET = FreeSSM
