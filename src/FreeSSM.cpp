@@ -385,10 +385,11 @@ void FreeSSM::help()
 
 void FreeSSM::about()
 {
-	About *aboutdlg = new About(this, _language);
-	aboutdlg->show();
-	aboutdlg->exec();
-	delete aboutdlg;
+    //About *aboutdlg = new About(this, _language);
+    //aboutdlg->show();
+    //aboutdlg->exec();
+    //delete aboutdlg;
+    this->showMinimized();
 }
 
 
