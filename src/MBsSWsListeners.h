@@ -1,8 +1,9 @@
 #ifndef MBSSWSLISTENERS_H
 #define MBSSWSLISTENERS_H
 
-#include<QTcpServer>
+#include <QTcpServer>
 #include <QTcpSocket>
+#include <QMutex>
 
 
 class MBsSWsListeners : public QObject
@@ -17,10 +18,12 @@ public:
 
 private slots:
     void acceptNewConnection();
+    void clientDisconnected();
 
 private:
-    QTcpServer *tcpServer;
-    std::vector<QTcpSocket*> _OpenSockets;
+    QTcpServer* _tcpServer;
+    QTcpSocket* _OpenSocket;
+    QMutex _OpenSocketMutex;
 };
 
 #endif // MBSSWSLISTENERS_H

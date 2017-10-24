@@ -2,22 +2,24 @@
 
 MBsSWsListeners::MBsSWsListeners()
 {    
-    tcpServer = new QTcpServer(this);
+    _tcpServer = new QTcpServer(this);
 
-    if (!tcpServer->listen(QHostAddress::Any, 12345))
+    if (!_tcpServer->listen(QHostAddress::Any, 12345))
     {
-        qWarning((tr("FreeSSM MBsSWs Listeners Server. Unable to start the server: %1.").arg(tcpServer->errorString())).toLatin1());
+        qWarning((tr("FreeSSM MBsSWs Listeners Server. Unable to start the server: %1.").arg(_tcpServer->errorString())).toLatin1());
     }
     else
     {
-        connect(tcpServer, SIGNAL(newConnection()), this, SLOT(acceptNewConnection()));
+        connect(_tcpServer, SIGNAL(newConnection()), this, SLOT(acceptNewConnection()));
     }
+
+    _OpenSocket = NULL;
 }
 
 MBsSWsListeners::~MBsSWsListeners()
 {
-    tcpServer->close();
-    delete tcpServer;
+    _tcpServer->close();
+    delete _tcpServer;
 }
 
 void MBsSWsListeners::acceptNewConnection()
@@ -30,25 +32,40 @@ void MBsSWsListeners::acceptNewConnection()
     out.device()->seek(0);
     out << (quint16)(block.size() - sizeof(quint16));
 
-    QTcpSocket *clientConnection = tcpServer->nextPendingConnection();
+    QTcpSocket *clientConnection = _tcpServer->nextPendingConnection();
     connect(clientConnection, SIGNAL(disconnected()),
             clientConnection, SLOT(deleteLater()));
 
-    _OpenSockets.push_back(clientConnection);
+    connect(clientConnection, SIGNAL(disconnected()),
+            this, SLOT(clientDisconnected()));
+
+    _OpenSocketMutex.lock();
+    _OpenSocket = clientConnection;
+    _OpenSocketMutex.unlock();
 }
 
 void MBsSWsListeners::publishData(const std::string& data)
 {
-    QByteArray block;
-    QDataStream out(&block, QIODevice::WriteOnly);
-    //out.setVersion(QDataStream::Qt_4_0);
-    //out << (quint16)0;
-    out << data.c_str();
-    //out.device()->seek(0);
-    //out << (quint16)(block.size() - sizeof(quint16));
-
-    for (int i = 0; i < _OpenSockets.size(); i++)
+    _OpenSocketMutex.lock();
+    if (_OpenSocket != NULL)
     {
-        _OpenSockets[i]->write(block);
+        QByteArray block;
+        QDataStream out(&block, QIODevice::WriteOnly);
+        //out.setVersion(QDataStream::Qt_4_0);
+        //out << (quint16)0;
+        out << data.c_str();
+        //out.device()->seek(0);
+        //out << (quint16)(block.size() - sizeof(quint16));
+
+        _OpenSocket->write(block);
     }
+    _OpenSocketMutex.unlock();
+}
+
+void MBsSWsListeners::clientDisconnected()
+{
+    _OpenSocketMutex.lock();
+    delete _OpenSocket;
+    _OpenSocket = NULL;
+    _OpenSocketMutex.unlock();    
 }
