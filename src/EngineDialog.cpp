@@ -22,11 +22,13 @@
 
 EngineDialog::EngineDialog(AbstractDiagInterface *diagInterface,
                            QString language,
-                           bool isMBsSWsReportingEnabled) :
+                           bool isMBsSWsReportingEnabled,
+                           MBsSWsListeners& aMBsSWsListeners) :
     ControlUnitDialog(
         tr("Engine Control Unit"),
         diagInterface,
-        language)
+        language),
+    _MBsSWsListeners(aMBsSWsListeners)
 {
 	// *** Initialize global variables:
 	_content_DCs = NULL;
@@ -272,7 +274,7 @@ void EngineDialog::measuringblocks(bool isMBsSWsReportingEnabled)
 	// Save content settings:
 	saveContentSettings();
 	// Create, setup and insert new content-widget:
-	_content_MBsSWs = new CUcontent_MBsSWs(_MBSWsettings);
+    _content_MBsSWs = new CUcontent_MBsSWs(_MBsSWsListeners, _MBSWsettings);
 	setContentWidget(tr("Measuring Blocks:"), _content_MBsSWs);
 	_content_MBsSWs->show();
 	ok = _content_MBsSWs->setup(_SSMPdev);

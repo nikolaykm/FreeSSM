@@ -24,7 +24,7 @@
 
 const QString CUcontent_MBsSWs::DefaultTimeValStr {"---"};
 
-CUcontent_MBsSWs::CUcontent_MBsSWs(MBSWsettings_dt settings, QWidget *parent) : QWidget(parent)
+CUcontent_MBsSWs::CUcontent_MBsSWs(MBsSWsListeners& aMBsSWsListeners, MBSWsettings_dt settings, QWidget *parent) : QWidget(parent), _MBsSWsListeners(aMBsSWsListeners)
 {
 	_SSMPdev = NULL;
 	_timemode = settings.timeMode;
@@ -675,26 +675,11 @@ void CUcontent_MBsSWs::processMBSWRawValues(const std::vector<unsigned int>& raw
 	// Display new values:
 	_valuesTableView->updateMBSWvalues(valueStrList, minValueStrList, maxValueStrList, unitStrList);
 
-    QUdpSocket *udpSocket = new QUdpSocket(this);
-    for (int row = 0; row < valueStrList.size(); row++)
+    for(int row = 0; row < valueStrList.size(); row++)
     {
-        QByteArray datagram;
-        datagram.append(valueStrList.at(row));
-        datagram.append(",");
-        datagram.append(minValueStrList.at(row));
-        datagram.append(",");
-        datagram.append(maxValueStrList.at(row));
-        datagram.append(",");
-        datagram.append(unitStrList.at(row));
-
-        // " + QByteArray::number(messageNo);
-
-        udpSocket->writeDatagram(datagram.data(), datagram.size(),
-                                 QHostAddress::Broadcast, 12345);
+        QString data = valueStrList.at(row)+","+minValueStrList.at(row)+","+maxValueStrList.at(row)+","+unitStrList.at(row);
+        _MBsSWsListeners.publishData(data.toStdString());
     }
-
-    delete udpSocket;
-
 
 	// Output refresh duration:
 	updateTimeInfo(refreshduration_ms);

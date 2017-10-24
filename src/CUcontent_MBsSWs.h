@@ -40,6 +40,8 @@
 // To do binary file operations storing the current setup
 #include <fstream>
 
+#include <MBsSWsListeners.h>
+
 class MBSWvalue_dt
 {
 public:
@@ -79,8 +81,8 @@ class CUcontent_MBsSWs : public QWidget, private Ui::MBSWcontent_Form
 {
 	Q_OBJECT
 
-public:
-	CUcontent_MBsSWs(MBSWsettings_dt options = MBSWsettings_dt(), QWidget *parent = nullptr);
+public:    
+    CUcontent_MBsSWs(MBsSWsListeners& aMBsSWsListeners, MBSWsettings_dt options = MBSWsettings_dt(), QWidget *parent = nullptr);
 	~CUcontent_MBsSWs();
 	bool setup(SSMprotocol *SSMPdev);
 	bool startMBSWreading();
@@ -105,6 +107,7 @@ private:
 	std::vector<MBSWvalue_dt> _lastValues;
 	std::vector<MinMaxMBSWvalue_dt> _minmaxData;
 	std::vector<unsigned int> _tableRowPosIndexes; /* index of the row at which the MB/SW is displayed in the values-table-widget */
+    MBsSWsListeners& _MBsSWsListeners;
 
 	void setupTimeModeUiElements();
 	void setupUiFonts();

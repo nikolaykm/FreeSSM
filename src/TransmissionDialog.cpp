@@ -22,12 +22,15 @@
 
 TransmissionDialog::TransmissionDialog(AbstractDiagInterface *diagInterface,
                                        QString language,
-                                       bool isMBsSWsReportingEnabled) :
+                                       bool isMBsSWsReportingEnabled,
+                                       MBsSWsListeners& aMBsSWsListeners) :
     ControlUnitDialog(
         tr("Transmission Control Unit"),
         diagInterface,
-        language)
+        language),
+    _MBsSWsListeners(aMBsSWsListeners)
 {
+    _MBsSWsListeners.publishData("Loading transmission dialog");
 	// *** Initialize global variables:
 	_content_DCs = NULL;
 	_content_MBsSWs = NULL;
@@ -230,7 +233,7 @@ void TransmissionDialog::measuringblocks(bool isMBsSWsReportingEnabled)
 	// Save content settings:
 	saveContentSettings();
 	// Create, setup and insert new content-widget:
-	_content_MBsSWs = new CUcontent_MBsSWs(_MBSWsettings);
+    _content_MBsSWs = new CUcontent_MBsSWs(_MBsSWsListeners, _MBSWsettings);
 	setContentWidget(tr("Measuring Blocks:"), _content_MBsSWs);
 	_content_MBsSWs->show();
 	ok = _content_MBsSWs->setup(_SSMPdev);

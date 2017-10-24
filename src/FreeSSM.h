@@ -24,6 +24,7 @@
 #include <QtGui>
 #include "AbstractDiagInterface.h"
 #include "ui_FreeSSM.h"
+#include "MBsSWsListeners.h"
 
 class FreeSSM : public QMainWindow, private Ui::FreeSSM_MainWindow
 {
@@ -38,6 +39,7 @@ private:
 	QLabel *_progtitle_label;
 	QAction *_dump_action;
 	bool _dumping;
+    MBsSWsListeners _MBsSWsListeners;
 
 	void setupUiFonts();
 	AbstractDiagInterface * initInterface();

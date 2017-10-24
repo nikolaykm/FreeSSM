@@ -39,6 +39,7 @@
 #include "FSSMdialogs.h"
 #include "AbstractDiagInterface.h"
 #include "SSMprotocol.h"
+#include "MBsSWsListeners.h"
 
 
 
@@ -47,7 +48,7 @@ class EngineDialog : public ControlUnitDialog
 	Q_OBJECT
 
 public:
-    EngineDialog(AbstractDiagInterface *diagInterface, QString language, bool isMBsSWsReportingEnabled);
+    EngineDialog(AbstractDiagInterface *diagInterface, QString language, bool isMBsSWsReportingEnabled, MBsSWsListeners& aMBsSWsListeners);
 
 private:
 	enum mode_dt {DCs_mode=1, MBsSWs_mode=2, Adaptions_mode=3, SysTests_mode};
@@ -64,6 +65,7 @@ private:
 	CUcontent_Adjustments *_content_Adjustments;
 	// Current content/mode:
 	mode_dt _mode;
+    MBsSWsListeners& _MBsSWsListeners;
 
 	void setup();
 	void saveContentSettings();

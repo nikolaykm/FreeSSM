@@ -20,7 +20,9 @@
 #include "AirConDialog.h"
 
 
-AirConDialog::AirConDialog(AbstractDiagInterface *diagInterface, QString language) : ControlUnitDialog(tr("Air Conditioning Control Unit"), diagInterface, language)
+AirConDialog::AirConDialog(AbstractDiagInterface *diagInterface, QString language, MBsSWsListeners& aMBsSWsListeners) :
+    ControlUnitDialog(tr("Air Conditioning Control Unit"), diagInterface, language),
+    _MBsSWsListeners(aMBsSWsListeners)
 {
 	// *** Initialize global variables:
 	_content_DCs = NULL;
@@ -216,7 +218,7 @@ void AirConDialog::measuringblocks()
 	// Save content settings:
 	saveContentSettings();
 	// Create, setup and insert new content-widget:
-	_content_MBsSWs = new CUcontent_MBsSWs(_MBSWsettings);
+    _content_MBsSWs = new CUcontent_MBsSWs(_MBsSWsListeners, _MBSWsettings);
 	setContentWidget(tr("Measuring Blocks:"), _content_MBsSWs);
 	_content_MBsSWs->show();
 	ok = _content_MBsSWs->setup(_SSMPdev);

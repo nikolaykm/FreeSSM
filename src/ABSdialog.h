@@ -38,6 +38,7 @@
 #include "FSSMdialogs.h"
 #include "AbstractDiagInterface.h"
 #include "SSMprotocol.h"
+#include "MBsSWsListeners.h"
 
 
 
@@ -46,7 +47,7 @@ class ABSdialog : public ControlUnitDialog
 	Q_OBJECT
 
 public:
-	ABSdialog(AbstractDiagInterface *diagInterface, QString language);
+    ABSdialog(AbstractDiagInterface *diagInterface, QString language, MBsSWsListeners& aMBsSWsListeners);
 
 private:
 	enum mode_dt {DCs_mode=1, MBsSWs_mode=2};
@@ -62,6 +63,7 @@ private:
 	CUcontent_MBsSWs *_content_MBsSWs;
 	// Current content/mode:
 	mode_dt _mode;
+    MBsSWsListeners& _MBsSWsListeners;
 
 	void setup();
 	void saveContentSettings();

@@ -38,6 +38,7 @@
 #include "FSSMdialogs.h"
 #include "AbstractDiagInterface.h"
 #include "SSMprotocol.h"
+#include "MBsSWsListeners.h"
 
 
 
@@ -46,7 +47,7 @@ class TransmissionDialog : public ControlUnitDialog
 	Q_OBJECT
 
 public:
-    TransmissionDialog(AbstractDiagInterface *diagInterface, QString language, bool isMBsSWsReportingEnabled);
+    TransmissionDialog(AbstractDiagInterface *diagInterface, QString language, bool isMBsSWsReportingEnabled, MBsSWsListeners& aMBsSWsListeners);
 
 private:
 	enum mode_dt {DCs_mode=1, MBsSWs_mode=2, Adaptions_mode=3};
@@ -64,6 +65,7 @@ private:
 	CUcontent_Adjustments *_content_Adjustments;
 	// Current content/mode:
 	mode_dt _mode;
+    MBsSWsListeners& _MBsSWsListeners;
 
 	void setup();
 	void runClearMemory(SSMprotocol::CMlevel_dt level);

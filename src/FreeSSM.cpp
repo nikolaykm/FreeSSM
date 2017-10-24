@@ -292,7 +292,7 @@ void FreeSSM::engine(bool isMBsSWsReportingEnabled)
 	AbstractDiagInterface *diagInterface = initInterface();
 	if (diagInterface)
 	{
-        EngineDialog *enginedialog = new EngineDialog(diagInterface, _language, isMBsSWsReportingEnabled);
+        EngineDialog *enginedialog = new EngineDialog(diagInterface, _language, isMBsSWsReportingEnabled, _MBsSWsListeners);
 		if (!enginedialog->isHidden())
 			enginedialog->exec();
 		delete enginedialog;
@@ -303,16 +303,21 @@ void FreeSSM::engine(bool isMBsSWsReportingEnabled)
 
 void FreeSSM::transmission(bool isMBsSWsReportingEnabled)
 {
+    _MBsSWsListeners.publishData("Trying to open transmission dialog");
 	if (_dumping) return;
 	AbstractDiagInterface *diagInterface = initInterface();
 	if (diagInterface)
 	{
-        TransmissionDialog *transmissiondialog = new TransmissionDialog(diagInterface, _language, isMBsSWsReportingEnabled);
+        TransmissionDialog *transmissiondialog = new TransmissionDialog(diagInterface, _language, isMBsSWsReportingEnabled, _MBsSWsListeners);
 		if (!transmissiondialog->isHidden())
 			transmissiondialog->exec();
 		delete transmissiondialog;
 		delete diagInterface;
 	}
+    else
+    {
+        _MBsSWsListeners.publishData("Can't open transmission dialog");
+    }
 }
 
 void FreeSSM::abs()
@@ -321,7 +326,7 @@ void FreeSSM::abs()
 	AbstractDiagInterface *diagInterface = initInterface();
 	if (diagInterface)
 	{
-		ABSdialog *absdialog = new ABSdialog(diagInterface, _language);
+        ABSdialog *absdialog = new ABSdialog(diagInterface, _language, _MBsSWsListeners);
 		if (!absdialog->isHidden())
 			absdialog->exec();
 		delete absdialog;
@@ -335,7 +340,7 @@ void FreeSSM::cruisecontrol()
 	AbstractDiagInterface *diagInterface = initInterface();
 	if (diagInterface)
 	{
-		CruiseControlDialog *cruisecontroldialog = new CruiseControlDialog(diagInterface, _language);
+        CruiseControlDialog *cruisecontroldialog = new CruiseControlDialog(diagInterface, _language, _MBsSWsListeners);
 		if (!cruisecontroldialog->isHidden())
 			cruisecontroldialog->exec();
 		delete cruisecontroldialog;
@@ -349,7 +354,7 @@ void FreeSSM::aircon()
 	AbstractDiagInterface *diagInterface = initInterface();
 	if (diagInterface)
 	{
-		AirConDialog *aircondialog = new AirConDialog(diagInterface, _language);
+        AirConDialog *aircondialog = new AirConDialog(diagInterface, _language, _MBsSWsListeners);
 		if (!aircondialog->isHidden())
 			aircondialog->exec();
 		delete aircondialog;
