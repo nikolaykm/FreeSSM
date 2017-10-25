@@ -278,7 +278,7 @@ FreeSSM::FreeSSM(QApplication *app)
 
     if (isMBsSWsBlocksReportingConfigured)
     {
-        if (MBsSWsConfiguration.size() > 0 && (MBsSWsConfiguration.at(0).first == "engine::MB" || MBsSWsConfiguration.at(0).first == "engine::SW"))
+        if (MBsSWsConfiguration.size() > 0 && (MBsSWsConfiguration.at(0).first == "engine:MB" || MBsSWsConfiguration.at(0).first == "engine:SW"))
         {
             engine(isMBsSWsBlocksReportingConfigured, &MBsSWsConfiguration);
         }
