@@ -47,7 +47,11 @@ class TransmissionDialog : public ControlUnitDialog
 	Q_OBJECT
 
 public:
-    TransmissionDialog(AbstractDiagInterface *diagInterface, QString language, bool isMBsSWsReportingEnabled, MBsSWsListeners& aMBsSWsListeners);
+    TransmissionDialog(AbstractDiagInterface *diagInterface,
+                       QString language,
+                       bool isMBsSWsReportingEnabled,
+                       MBsSWsListeners& aMBsSWsListeners,
+                       std::vector< std::pair<std::string, int> >* aMBsSWsConfiguration);
 
 private:
 	enum mode_dt {DCs_mode=1, MBsSWs_mode=2, Adaptions_mode=3};
@@ -73,7 +77,7 @@ private:
 
 private slots:
 	void DTCs();
-    void measuringblocks(bool isMBsSWsReportingEnabled = false);
+    void measuringblocks(bool isMBsSWsReportingEnabled = false, std::vector< std::pair<std::string, int> >* aMBsSWsConfiguration = NULL);
 	void adjustments();
 	void clearMemory();
 	void clearMemory2();

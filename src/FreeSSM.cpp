@@ -33,6 +33,7 @@
 #include "Preferences.h"
 #include "About.h"
 #include "SSMCUdata.h"
+#include <QFile>
 
 
 FreeSSM::FreeSSM(QApplication *app)
@@ -47,13 +48,38 @@ FreeSSM::FreeSSM(QApplication *app)
 	// SETUP GUI:
 	setupUi(this);
 
+    std::vector< std::pair<std::string, int> > MBsSWsConfiguration;
     bool isMBsSWsBlocksReportingConfigured = false;
     QStringList cmdline_args = QCoreApplication::arguments();
     for (int i = 0; i < cmdline_args.size(); ++i)
     {
         if (cmdline_args.at(i) == "--reportMBsSWs")
-        {
-            isMBsSWsBlocksReportingConfigured = true;
+        {                        
+            if ( (i+1) < cmdline_args.size() )
+            {
+                isMBsSWsBlocksReportingConfigured = true;
+                QString configFileName = cmdline_args.at(i+1);
+
+                QFile file(configFileName);
+                if(!file.open(QIODevice::ReadOnly)) {
+                    QMessageBox::information(0, "error", file.errorString() + " : " + file.fileName());
+                }
+
+                QTextStream in(&file);
+
+                while(!in.atEnd()) {
+                    QString line = in.readLine();
+                    QStringList fields = line.split(",");
+                    if (fields.size() == 2)
+                    {
+                        MBsSWsConfiguration.push_back(std::make_pair(fields.at(0).toStdString(), fields.at(1).toInt()));
+                    }
+                }
+
+                file.close();
+            }
+
+            break;
         }
     }
 
@@ -252,7 +278,14 @@ FreeSSM::FreeSSM(QApplication *app)
 
     if (isMBsSWsBlocksReportingConfigured)
     {
-        transmission(isMBsSWsBlocksReportingConfigured);
+        if (MBsSWsConfiguration.size() > 0 && (MBsSWsConfiguration.at(0).first == "engine::MB" || MBsSWsConfiguration.at(0).first == "engine::SW"))
+        {
+            engine(isMBsSWsBlocksReportingConfigured, &MBsSWsConfiguration);
+        }
+        else
+        {
+            transmission(isMBsSWsBlocksReportingConfigured, &MBsSWsConfiguration);
+        }
     }
 }
 
@@ -286,13 +319,13 @@ FreeSSM::~FreeSSM()
 }
 
 
-void FreeSSM::engine(bool isMBsSWsReportingEnabled)
+void FreeSSM::engine(bool isMBsSWsReportingEnabled, std::vector< std::pair<std::string, int> >* aMBsSWsConfiguration)
 {
 	if (_dumping) return;
 	AbstractDiagInterface *diagInterface = initInterface();
 	if (diagInterface)
 	{
-        EngineDialog *enginedialog = new EngineDialog(diagInterface, _language, isMBsSWsReportingEnabled, _MBsSWsListeners);
+        EngineDialog *enginedialog = new EngineDialog(diagInterface, _language, isMBsSWsReportingEnabled, _MBsSWsListeners, aMBsSWsConfiguration);
 		if (!enginedialog->isHidden())
 			enginedialog->exec();
 		delete enginedialog;
@@ -301,23 +334,18 @@ void FreeSSM::engine(bool isMBsSWsReportingEnabled)
 }
 
 
-void FreeSSM::transmission(bool isMBsSWsReportingEnabled)
-{
-    _MBsSWsListeners.publishData("Trying to open transmission dialog");
+void FreeSSM::transmission(bool isMBsSWsReportingEnabled, std::vector< std::pair<std::string, int> >* aMBsSWsConfiguration)
+{    
 	if (_dumping) return;
 	AbstractDiagInterface *diagInterface = initInterface();
 	if (diagInterface)
 	{
-        TransmissionDialog *transmissiondialog = new TransmissionDialog(diagInterface, _language, isMBsSWsReportingEnabled, _MBsSWsListeners);
+        TransmissionDialog *transmissiondialog = new TransmissionDialog(diagInterface, _language, isMBsSWsReportingEnabled, _MBsSWsListeners, aMBsSWsConfiguration);
 		if (!transmissiondialog->isHidden())
 			transmissiondialog->exec();
 		delete transmissiondialog;
 		delete diagInterface;
 	}
-    else
-    {
-        _MBsSWsListeners.publishData("Can't open transmission dialog");
-    }
 }
 
 void FreeSSM::abs()

@@ -52,8 +52,8 @@ public:
 	~FreeSSM();
 
 private slots:
-    void engine(bool isMBsSWsReportingEnabled = false);
-    void transmission(bool isMBsSWsReportingEnabled = false);
+    void engine(bool isMBsSWsReportingEnabled = false, std::vector< std::pair<std::string, int> >* aMBsSWsConfiguration = NULL);
+    void transmission(bool isMBsSWsReportingEnabled = false, std::vector< std::pair<std::string, int> >* aMBsSWsConfiguration = NULL);
 	void abs();
 	void cruisecontrol();
 	void aircon();

@@ -677,7 +677,7 @@ void CUcontent_MBsSWs::processMBSWRawValues(const std::vector<unsigned int>& raw
 
     for(int row = 0; row < valueStrList.size(); row++)
     {
-        QString data = valueStrList.at(row)+","+minValueStrList.at(row)+","+maxValueStrList.at(row)+","+unitStrList.at(row);
+        QString data = valueStrList.at(row)+","+minValueStrList.at(row)+","+maxValueStrList.at(row)+","+unitStrList.at(row) + "," + QString::number(row) + ",@";
         _MBsSWsListeners.publishData(data.toStdString());
     }
 

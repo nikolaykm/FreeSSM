@@ -23,7 +23,8 @@
 EngineDialog::EngineDialog(AbstractDiagInterface *diagInterface,
                            QString language,
                            bool isMBsSWsReportingEnabled,
-                           MBsSWsListeners& aMBsSWsListeners) :
+                           MBsSWsListeners& aMBsSWsListeners,
+                           std::vector< std::pair<std::string, int> >* aMBsSWsConfiguration) :
     ControlUnitDialog(
         tr("Engine Control Unit"),
         diagInterface,
@@ -65,7 +66,7 @@ EngineDialog::EngineDialog(AbstractDiagInterface *diagInterface,
 
     if (isMBsSWsReportingEnabled)
     {
-        measuringblocks(isMBsSWsReportingEnabled);
+        measuringblocks(isMBsSWsReportingEnabled, aMBsSWsConfiguration);
     }
 
 }
@@ -264,7 +265,7 @@ void EngineDialog::DCs()
 }
 
 
-void EngineDialog::measuringblocks(bool isMBsSWsReportingEnabled)
+void EngineDialog::measuringblocks(bool isMBsSWsReportingEnabled, std::vector< std::pair<std::string, int> >* aMBsSWsConfiguration)
 {
 	bool ok = false;
 	if (_mode == MBsSWs_mode) return;
@@ -280,14 +281,21 @@ void EngineDialog::measuringblocks(bool isMBsSWsReportingEnabled)
 	ok = _content_MBsSWs->setup(_SSMPdev);
 	if (ok)
     {
-        if (isMBsSWsReportingEnabled)
+        if (isMBsSWsReportingEnabled && aMBsSWsConfiguration != NULL)
         {
-            MBSWmetadata_dt gear;
-            gear.blockType = BlockType::MB;
-            gear.nativeIndex = 1;
-            std::vector<MBSWmetadata_dt> gearList;
-            gearList.push_back(gear);
-            ok = _content_MBsSWs->setMBSWselection(gearList);
+            std::vector<MBSWmetadata_dt> configList;
+            MBSWmetadata_dt singleConfigItem;
+            for (int i = 0; i < aMBsSWsConfiguration->size(); i++)
+            {
+                if (aMBsSWsConfiguration->at(i).first == "engine:MB" || aMBsSWsConfiguration->at(i).first == "engine:SW")
+                {
+                    singleConfigItem.blockType = aMBsSWsConfiguration->at(i).first == "engine:MB" ? BlockType::MB : BlockType::SW;
+                    singleConfigItem.nativeIndex = aMBsSWsConfiguration->at(i).second;
+                    configList.push_back(singleConfigItem);
+                }
+            }
+
+            ok = _content_MBsSWs->setMBSWselection(configList);
             _content_MBsSWs->startMBSWreading();
         }
         else

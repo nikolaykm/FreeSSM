@@ -23,14 +23,14 @@
 TransmissionDialog::TransmissionDialog(AbstractDiagInterface *diagInterface,
                                        QString language,
                                        bool isMBsSWsReportingEnabled,
-                                       MBsSWsListeners& aMBsSWsListeners) :
+                                       MBsSWsListeners& aMBsSWsListeners,
+                                       std::vector< std::pair<std::string, int> >* aMBsSWsConfiguration) :
     ControlUnitDialog(
         tr("Transmission Control Unit"),
         diagInterface,
         language),
     _MBsSWsListeners(aMBsSWsListeners)
 {
-    _MBsSWsListeners.publishData("Loading transmission dialog");
 	// *** Initialize global variables:
 	_content_DCs = NULL;
 	_content_MBsSWs = NULL;
@@ -55,10 +55,10 @@ TransmissionDialog::TransmissionDialog(AbstractDiagInterface *diagInterface,
 	// NOTE: using released() instead of pressed() as workaround for a Qt-Bug occuring under MS Windows
 
 
-        // Load/Show Diagnostic Code content:
-        _content_DCs = new CUcontent_DCs_twoMemories();
-        setContentWidget(tr("Diagnostic Codes:"), _content_DCs);
-        _content_DCs->show();
+    // Load/Show Diagnostic Code content:
+    _content_DCs = new CUcontent_DCs_twoMemories();
+    setContentWidget(tr("Diagnostic Codes:"), _content_DCs);
+    _content_DCs->show();
 
 	// Make GUI visible
 	this->show();
@@ -67,7 +67,7 @@ TransmissionDialog::TransmissionDialog(AbstractDiagInterface *diagInterface,
 
     if (isMBsSWsReportingEnabled)
     {
-        measuringblocks(isMBsSWsReportingEnabled);
+        measuringblocks(isMBsSWsReportingEnabled, aMBsSWsConfiguration);
     }
 
 }
@@ -223,7 +223,7 @@ void TransmissionDialog::DTCs()
 }
 
 
-void TransmissionDialog::measuringblocks(bool isMBsSWsReportingEnabled)
+void TransmissionDialog::measuringblocks(bool isMBsSWsReportingEnabled, std::vector< std::pair<std::string, int> >* aMBsSWsConfiguration)
 {
 	bool ok = false;
 	if (_mode == MBsSWs_mode) return;
@@ -239,14 +239,21 @@ void TransmissionDialog::measuringblocks(bool isMBsSWsReportingEnabled)
 	ok = _content_MBsSWs->setup(_SSMPdev);
 	if (ok)
     {
-        if (isMBsSWsReportingEnabled)
+        if (isMBsSWsReportingEnabled && aMBsSWsConfiguration != NULL)
         {
-            MBSWmetadata_dt gear;
-            gear.blockType = BlockType::SW;
-            gear.nativeIndex = 7;
-            std::vector<MBSWmetadata_dt> gearList;
-            gearList.push_back(gear);
-            ok = _content_MBsSWs->setMBSWselection(gearList);
+            std::vector<MBSWmetadata_dt> configList;
+            MBSWmetadata_dt singleConfigItem;
+            for (int i = 0; i < aMBsSWsConfiguration->size(); i++)
+            {
+                if (aMBsSWsConfiguration->at(i).first == "transmission:MB" || aMBsSWsConfiguration->at(i).first == "transmission:SW")
+                {
+                    singleConfigItem.blockType = aMBsSWsConfiguration->at(i).first == "transmission:MB" ? BlockType::MB : BlockType::SW;
+                    singleConfigItem.nativeIndex = aMBsSWsConfiguration->at(i).second;
+                    configList.push_back(singleConfigItem);
+                }
+            }
+
+            ok = _content_MBsSWs->setMBSWselection(configList);
             _content_MBsSWs->startMBSWreading();
         }
         else
